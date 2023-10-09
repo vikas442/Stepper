@@ -22,6 +22,9 @@ class Stepper : View {
     private var cellHeight = 24.toFloat()
     private var maxStateNumber = 3
     private var stepSpace = 10.toFloat()
+    private var radius = 12.toFloat()
+
+    private val paint = Paint()
 
 
     constructor(context: Context) : super(context) {
@@ -54,19 +57,18 @@ class Stepper : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        val corner = cellHeight/2
+        
         val firstCorner = floatArrayOf(
-            corner, corner,
+            radius, radius,
             0f, 0f,
             0f, 0f,
-            corner, corner
+            radius, radius
         )
 
         val lastCorner = floatArrayOf(
             0f, 0f,
-            corner, corner,
-            corner, corner,
+            radius, radius,
+            radius, radius,
             0f, 0f
         )
 
@@ -76,8 +78,6 @@ class Stepper : View {
             0f, 0f,
             0f, 0f
         )
-
-        val paint = Paint()
         for (index in 0 until maxStateNumber) {
             val startX = (cellWidth * index) + (stepSpace * index)
             val endX = startX + cellWidth
