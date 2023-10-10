@@ -1,8 +1,17 @@
 <resources>
     <declare-styleable name="Stepper">
-        <attr name="exampleString" format="string" />
-        <attr name="exampleDimension" format="dimension" />
-        <attr name="exampleColor" format="color" />
-        <attr name="exampleDrawable" format="color|reference" />
+        <attr name="stepHeight" format="dimension"/>
+        <attr name="stepType" format="enum">
+            <enum name="normal" value="1"/>
+            <enum name="gradient" value="0"/>
+        </attr>
+        <attr name="stepCheckedColor" format="color|reference"/>
+        <attr name="stepCheckedColor2" format="color|reference"/>
+        <attr name="stepUnCheckedColor" format="color|reference"/>
+        <attr name="stepUnCheckedColor2" format="color|reference"/>
+        <attr name="stepSpace" format="dimension"/>
+        <attr name="stepCornerRadius" format="dimension"/>
+        <attr name="stepCount" format="integer"/>
+        <attr name="stepSelected" format="integer"/>
     </declare-styleable>
 </resources>
