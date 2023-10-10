@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".GPayActivity">
+    tools:context=".StepperSampleActivity">
     <com.example.gpayintegration.Stepper
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="12dp"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,7 +16,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:stepCount="3"
         app:stepSelected="1"
-        app:stepHeight="12dp"
         app:stepCornerRadius="6dp"
         app:stepCheckedColor="#00EAFF"
         app:stepCheckedColor2="#7A17E5"/>

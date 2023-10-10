@@ -22,7 +22,8 @@ class Stepper : View {
     private var currentStep = 1
     private var stepSpace = 10.toFloat()
     private var radius = 12.toFloat()
-    private var stepType = StepType.GRADIENT
+    private var stepFillType = StepFillType.GRADIENT
+    private var stepType = StepType.CAPSULE_START_END
 
     private var checkedColor1: Int = Color.GREEN
     private var checkedColor2: Int = Color.RED
@@ -62,9 +63,9 @@ class Stepper : View {
             attrs, R.styleable.Stepper, defStyle, 0
         )
 
-        cellHeight = a.getDimension(R.styleable.Stepper_stepHeight, cellHeight)
         stepSpace = a.getDimension(R.styleable.Stepper_stepSpace, stepSpace)
         radius = a.getDimension(R.styleable.Stepper_stepCornerRadius, radius)
+        stepFillType = StepFillType.values()[a.getInt(R.styleable.Stepper_stepFillType, stepFillType.ordinal)]
         stepType = StepType.values()[a.getInt(R.styleable.Stepper_stepType, stepType.ordinal)]
         maxStateNumber = a.getInt(R.styleable.Stepper_stepCount, maxStateNumber)
         currentStep = a.getInt(R.styleable.Stepper_stepSelected, currentStep).absoluteValue.takeIf { it<=maxStateNumber}?: maxStateNumber
@@ -76,7 +77,6 @@ class Stepper : View {
 
         setupCorners()
         a.recycle()
-
     }
 
     private fun setupCorners() {
@@ -165,12 +165,20 @@ class Stepper : View {
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, cellHeight.toInt(), oldw, oldh)
+        cellHeight = h.toFloat()
+        super.onSizeChanged(w, h, oldw, oldh)
         cellWidth = (width - (stepSpace * maxStateNumber-1))/maxStateNumber
     }
 
-    enum class StepType {
+    enum class StepFillType {
         GRADIENT,
         NORMAL
+    }
+
+    enum class StepType {
+        CAPSULE_START_END,
+        CAPSULE,
+        ROUNDED_CORNER,
+        RECTANGLE
     }
 }

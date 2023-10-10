@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GPayIntegration"
-        tools:targetApi="31">
+        tools:targetApi="34">
         <activity
-            android:name=".GPayActivity"
+            android:name=".StepperSampleActivity"
             android:exported="true"
             android:theme="@style/Theme.GPayIntegration">>
             <intent-filter>
@@ -21,17 +21,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <meta-data
-            android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.GPayIntegration">
         </activity>
     </application>
 
