@@ -187,10 +187,10 @@ class Stepper : View {
     }
 
     private fun getStepItem(index: Int): StepItem {
-        val startX = (stepWidth * index) + (stepSpace * index)
+        val startX = (stepWidth * index) + (stepSpace * index) + paddingStart
         val endX = startX + stepWidth
-        val startY = 0.toFloat()
-        val endY = stepHeight
+        val startY = 0.toFloat() + paddingTop
+        val endY = startY + stepHeight
         val rect = RectF(
             startX,
             startY,
@@ -217,11 +217,11 @@ class Stepper : View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        stepWidth = (width - (stepSpace * maxStateNumber-1))/maxStateNumber
+        stepWidth = (width - paddingStart - paddingEnd - (stepSpace * maxStateNumber-1))/maxStateNumber
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val newHeightSpec = MeasureSpec.makeMeasureSpec(stepHeight.toInt(), MeasureSpec.EXACTLY)
+        val newHeightSpec = MeasureSpec.makeMeasureSpec(stepHeight.toInt() + paddingTop + paddingBottom, MeasureSpec.EXACTLY)
         super.onMeasure(widthMeasureSpec, newHeightSpec)
     }
 
