@@ -1,4 +1,4 @@
-package com.example.gpayintegration
+package com.vikas442.stepper
 
 import android.content.Context
 import android.util.TypedValue

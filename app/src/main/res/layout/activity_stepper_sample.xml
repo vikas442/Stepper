@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".StepperSampleActivity">
-    <com.example.gpayintegration.Stepper
+    <com.vikas442.stepper.Stepper
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintVertical_bias="0"

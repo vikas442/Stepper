@@ -1,4 +1,4 @@
-package com.example.gpayintegration
+package com.vikas442.stepper
 
 import android.content.Context
 import android.graphics.Canvas
@@ -39,8 +39,9 @@ class Stepper : View {
         }
     var stepSpace = 4.dpToPx(this.context)
         set(value) {
-            if (value >= 0)
-            field = value
+            if (value >= 0) {
+                field = value
+            }
         }
     private var radius = 12.dpToPx(this.context)
 
