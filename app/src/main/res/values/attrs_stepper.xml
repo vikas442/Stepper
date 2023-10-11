@@ -14,6 +14,7 @@
         <attr name="stepCheckedColor2" format="color|reference"/>
         <attr name="stepUnCheckedColor" format="color|reference"/>
         <attr name="stepUnCheckedColor2" format="color|reference"/>
+        <attr name="stepHeight" format="dimension"/>
         <attr name="stepSpace" format="dimension"/>
         <attr name="stepCornerRadius" format="dimension"/>
         <attr name="stepCount" format="integer"/>

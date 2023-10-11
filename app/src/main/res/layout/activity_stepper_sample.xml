@@ -8,7 +8,7 @@
     tools:context=".StepperSampleActivity">
     <com.example.gpayintegration.Stepper
         android:layout_width="0dp"
-        android:layout_height="12dp"
+        android:layout_height="wrap_content"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,7 +16,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:stepCount="3"
         app:stepSelected="1"
+        app:stepType="capsule_start_end"
         app:stepCornerRadius="6dp"
+        app:stepHeight="16dp"
         app:stepCheckedColor="#00EAFF"
         app:stepCheckedColor2="#7A17E5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

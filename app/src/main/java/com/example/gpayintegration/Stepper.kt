@@ -9,26 +9,60 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import kotlin.math.absoluteValue
 
 /**
- * TODO: document your custom view class.
+ * Stepper View
  */
 class Stepper : View {
 
-    private var cellWidth = 0.toFloat()
-    private var cellHeight = 24.toFloat()
-    private var maxStateNumber = 1
-    private var currentStep = 1
-    private var stepSpace = 10.toFloat()
-    private var radius = 12.toFloat()
-    private var stepFillType = StepFillType.GRADIENT
-    private var stepType = StepType.CAPSULE_START_END
+    private var stepWidth = 0.toFloat()
+    var stepHeight = 8.dpToPx(this.context)
+        set(value) {
+            if (value > 0) {
+                field = value
+                invalidate()
+            }
+        }
+    var maxStateNumber = 1
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var currentStep = 1
+        set(value) {
+            if (value in 1..maxStateNumber) {
+                field = value
+                invalidate()
+            }
+        }
+    var stepSpace = 4.dpToPx(this.context)
+        set(value) {
+            if (value >= 0)
+            field = value
+        }
+    private var radius = 12.dpToPx(this.context)
 
+    var stepFillType = StepFillType.GRADIENT
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var stepType = StepType.CAPSULE_START_END
+        set(value) {
+            field = value
+            adjustRadiusByType()
+        }
+
+    @ColorInt
     private var checkedColor1: Int = Color.GREEN
+    @ColorInt
     private var checkedColor2: Int = Color.RED
 
+    @ColorInt
     private var unCheckedColor1 = Color.LTGRAY
+    @ColorInt
     private var unCheckedColor2 = Color.LTGRAY
 
     private val checkedPaint = Paint()
@@ -64,6 +98,7 @@ class Stepper : View {
         )
 
         stepSpace = a.getDimension(R.styleable.Stepper_stepSpace, stepSpace)
+        stepHeight = a.getDimension(R.styleable.Stepper_stepHeight, stepHeight)
         radius = a.getDimension(R.styleable.Stepper_stepCornerRadius, radius)
         stepFillType = StepFillType.values()[a.getInt(R.styleable.Stepper_stepFillType, stepFillType.ordinal)]
         stepType = StepType.values()[a.getInt(R.styleable.Stepper_stepType, stepType.ordinal)]
@@ -74,9 +109,17 @@ class Stepper : View {
         checkedColor2 = a.getColor(R.styleable.Stepper_stepCheckedColor2, checkedColor2)
         unCheckedColor1 = a.getColor(R.styleable.Stepper_stepUnCheckedColor, unCheckedColor1)
         unCheckedColor1 = a.getColor(R.styleable.Stepper_stepUnCheckedColor2, unCheckedColor1)
-
+        adjustRadiusByType()
         setupCorners()
         a.recycle()
+    }
+
+    private fun adjustRadiusByType() {
+        if (stepType == StepType.CAPSULE || stepType == StepType.CAPSULE_START_END) {
+            radius = stepHeight/2
+        } else if (stepType == StepType.RECTANGLE) {
+            radius = 0.toFloat()
+        }
     }
 
     private fun setupCorners() {
@@ -144,10 +187,10 @@ class Stepper : View {
     }
 
     private fun getStepItem(index: Int): StepItem {
-        val startX = (cellWidth * index) + (stepSpace * index)
-        val endX = startX + cellWidth
+        val startX = (stepWidth * index) + (stepSpace * index)
+        val endX = startX + stepWidth
         val startY = 0.toFloat()
-        val endY = cellHeight
+        val endY = stepHeight
         val rect = RectF(
             startX,
             startY,
@@ -155,8 +198,16 @@ class Stepper : View {
             endY
         )
         val isChecked = index < currentStep
-        val gradient = if (isChecked) LinearGradient(startX, startY, endX, endY, checkedColor1, checkedColor2, android.graphics.Shader.TileMode.CLAMP)
-        else LinearGradient(startX, startY, endX, endY, unCheckedColor1, unCheckedColor2, android.graphics.Shader.TileMode.CLAMP)
+        val gradient = when(stepFillType) {
+            StepFillType.GRADIENT -> {
+                if (isChecked) LinearGradient(startX, startY, endX, endY, checkedColor1, checkedColor2, android.graphics.Shader.TileMode.CLAMP)
+                else LinearGradient(startX, startY, endX, endY, unCheckedColor1, unCheckedColor2, android.graphics.Shader.TileMode.CLAMP)
+            }
+            StepFillType.NORMAL -> {
+                if (isChecked) LinearGradient(startX, startY, endX, endY, checkedColor1, checkedColor1, android.graphics.Shader.TileMode.CLAMP)
+                else LinearGradient(startX, startY, endX, endY, unCheckedColor1, unCheckedColor1, android.graphics.Shader.TileMode.CLAMP)
+            }
+        }
         return StepItem().apply {
             this.gd = gradient
             this.rect = rect
@@ -165,9 +216,20 @@ class Stepper : View {
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        cellHeight = h.toFloat()
         super.onSizeChanged(w, h, oldw, oldh)
-        cellWidth = (width - (stepSpace * maxStateNumber-1))/maxStateNumber
+        stepWidth = (width - (stepSpace * maxStateNumber-1))/maxStateNumber
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val newHeightSpec = MeasureSpec.makeMeasureSpec(stepHeight.toInt(), MeasureSpec.EXACTLY)
+        super.onMeasure(widthMeasureSpec, newHeightSpec)
+    }
+
+    fun setStepCorners(radius: Float) {
+        if (radius >= 0) {
+            this.radius = radius
+            adjustRadiusByType()
+        }
     }
 
     enum class StepFillType {
